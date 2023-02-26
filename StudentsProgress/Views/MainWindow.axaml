@@ -1,0 +1,143 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:StudentsProgress.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:local="clr-namespace:StudentProgress.Models"
+		xmlns:conv="clr-namespace:StudentsProgress.Converters"
+        mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="850"
+		Width="1000" Height="850"
+        x:Class="StudentsProgress.Views.MainWindow"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="StudentsProgress">
+	
+	<Design.DataContext>
+		<vm:MainWindowViewModel/>
+	</Design.DataContext>
+	
+	<Window.Resources>
+		<conv:ScoreColorConverter x:Key="ColorConverter"/>
+	</Window.Resources>
+
+	<Window.Styles>
+		<Style Selector="TextBlock.h1">
+			<Setter Property="FontSize" Value="16"/>
+			<Setter Property="FontWeight" Value="Bold"/>
+			<Setter Property="Margin" Value="5"/>
+			<Setter Property="HorizontalAlignment" Value="Center"/>
+			<Setter Property="VerticalAlignment" Value="Center"/>
+		</Style>
+		<Style Selector="TextBlock.h2">
+			<Setter Property="FontSize" Value="16"/>
+			<Setter Property="Margin" Value="10"/>
+			<Setter Property="HorizontalAlignment" Value="Center"/>
+			<Setter Property="VerticalAlignment" Value="Center"/>
+		</Style>
+		<Style Selector="ComboBox">
+			<Setter Property="FontSize" Value="16"/>
+			<Setter Property="Margin" Value="5"/>
+			<Setter Property="HorizontalAlignment" Value="Center"/>
+			<Setter Property="VerticalAlignment" Value="Center"/>
+		</Style>
+	</Window.Styles>
+	<Grid ColumnDefinitions="*" RowDefinitions="*, 3*, *, *, *, *">
+
+		<Grid Grid.Row="0" RowDefinitions="Auto" ColumnDefinitions="3*, *, *, *, *, *">
+			<TextBlock Classes="h1" Text="ФИО студента" Grid.Column="0"/>
+			<TextBlock Classes="h1" Text="Визуальное&#x0a;программирование" Grid.Column="1"/>
+			<TextBlock Classes="h1" Text="Архитектура&#x0a;ЭВМ" Grid.Column="2"/>
+			<TextBlock Classes="h1" Text="Сети&#x0a;ЭВМ" Grid.Column="3"/>
+			<TextBlock Classes="h1" Text="Вычислительная&#x0a;математика" Grid.Column="4"/>
+			<TextBlock Classes="h1" Text="Средний&#x0a;балл" Grid.Column="5"/>
+		</Grid>
+
+		<ListBox Grid.Row="1" Items="{Binding Students}" SelectedIndex="{Binding Index}">
+			<ListBox.ItemTemplate>
+				<DataTemplate>
+					<Grid RowDefinitions="Auto" ColumnDefinitions="3*, *, *, *, *, *">
+						<TextBlock Name="NameText" Classes="h2" Text="{Binding Name}" Grid.Column="0"/>
+						<ComboBox Grid.Column="1" Name="VisualProgrammText" SelectedIndex="{Binding VisualProg}" Background="{Binding VisualProg, Converter={StaticResource ColorConverter}}">
+							<ComboBoxItem>0</ComboBoxItem>
+							<ComboBoxItem>1</ComboBoxItem>
+							<ComboBoxItem>2</ComboBoxItem>
+						</ComboBox>
+						<ComboBox Grid.Column="2" SelectedIndex="{Binding Architecture}" Background="{Binding Architecture, Converter={StaticResource ColorConverter}}">
+							<ComboBoxItem>0</ComboBoxItem>
+							<ComboBoxItem>1</ComboBoxItem>
+							<ComboBoxItem>2</ComboBoxItem>
+						</ComboBox>
+						<ComboBox Grid.Column="3" SelectedIndex="{Binding Networks}" Background="{Binding Networks, Converter={StaticResource ColorConverter}}">
+							<ComboBoxItem>0</ComboBoxItem>
+							<ComboBoxItem>1</ComboBoxItem>
+							<ComboBoxItem>2</ComboBoxItem>
+						</ComboBox>
+						<ComboBox Grid.Column="4" SelectedIndex="{Binding CalcMath}" Background="{Binding CalcMath, Converter={StaticResource ColorConverter}}">
+							<ComboBoxItem>0</ComboBoxItem>
+							<ComboBoxItem>1</ComboBoxItem>
+							<ComboBoxItem>2</ComboBoxItem>
+						</ComboBox>
+						<Border ZIndex="-1" Grid.Row="0" Grid.Column="5" Background="{Binding Average_Score, Converter={StaticResource ColorConverter}}" BorderBrush="Black"  BorderThickness="1">
+							<TextBlock Classes="h2" Text="{Binding Average_Score}" Grid.Column="5"/>
+						</Border>
+					</Grid>
+				</DataTemplate>
+			</ListBox.ItemTemplate>
+		</ListBox>
+
+		<Grid Name="SrGrid" Grid.Row="2" RowDefinitions="Auto" ColumnDefinitions="3*, *, *, *, *, *">
+			<TextBlock Classes="h2" Text="Cредние баллы" Grid.Column="0"/>
+
+			<Border Grid.Row="0" Grid.Column="0"  BorderBrush="Black"  BorderThickness="1" />
+			<Border Name="VisualSrBorder" ZIndex="-1" Background="{Binding ColorVisualSr}" Grid.Row="0" Grid.Column="1"  BorderBrush="Black"  BorderThickness="1">
+				<TextBlock Name="VisualSrText" Classes="h2" Text="{Binding ScoreVisualSr}" Grid.Column="1"/>
+			</Border>
+			<Border ZIndex="-1" Background="{Binding ColorArchitectureSr}" Grid.Row="0" Grid.Column="2"  BorderBrush="Black"  BorderThickness="1">
+				<TextBlock Classes="h2" Text="{Binding ScoreArchitectureSr}" Grid.Column="2"/>
+			</Border>
+			<Border ZIndex="-1" Background="{Binding ColorNetworksSr}" Grid.Row="0" Grid.Column="3"  BorderBrush="Black"  BorderThickness="1">
+				<TextBlock Classes="h2" Text="{Binding ScoreNetworksSr}" Grid.Column="3"/>
+			</Border>
+			<Border ZIndex="-1" Background="{Binding ColorCalculate_MathSr}" Grid.Row="0" Grid.Column="4"  BorderBrush="Black"  BorderThickness="1">
+				<TextBlock Classes="h2" Text="{Binding ScoreCalculate_MathSr}" Grid.Column="4"/>
+			</Border>
+			<Border Name="AverageSrBorder" ZIndex="-1" Background="{Binding ColorAverageSr}" Grid.Row="0" Grid.Column="5"  BorderBrush="Black"  BorderThickness="1">
+				<TextBlock Name="AverageSrText" Classes="h2" Text="{Binding ScoreAverageSr}" Grid.Column="5"/>
+			</Border>
+
+		</Grid>
+
+		<Grid Grid.Row="3" RowDefinitions="Auto" ColumnDefinitions="3*, *, *, *, *, *">
+			<TextBox Name="TextBoxName" Classes="h2" Grid.Column="0" Text="{Binding NewName}"/>
+			<ComboBox Grid.Column="1" SelectedIndex="{Binding ScoreVisual}">
+				<ComboBoxItem>0</ComboBoxItem>
+				<ComboBoxItem>1</ComboBoxItem>
+				<ComboBoxItem>2</ComboBoxItem>
+			</ComboBox>
+			<ComboBox Grid.Column="2" SelectedIndex="{Binding ScoreArchitecture}">
+				<ComboBoxItem>0</ComboBoxItem>
+				<ComboBoxItem>1</ComboBoxItem>
+				<ComboBoxItem>2</ComboBoxItem>
+			</ComboBox>
+			<ComboBox Grid.Column="3" SelectedIndex="{Binding ScoreNetworks}">
+				<ComboBoxItem>0</ComboBoxItem>
+				<ComboBoxItem>1</ComboBoxItem>
+				<ComboBoxItem>2</ComboBoxItem>
+			</ComboBox>
+			<ComboBox Grid.Column="4" SelectedIndex="{Binding ScoreCalculate_Math}">
+				<ComboBoxItem>0</ComboBoxItem>
+				<ComboBoxItem>1</ComboBoxItem>
+				<ComboBoxItem>2</ComboBoxItem>
+			</ComboBox>
+		</Grid>
+
+		<Grid Grid.Row="4" RowDefinitions="Auto" ColumnDefinitions="*, *">
+			<Button Name="AddStudentButton" Grid.Column="0" Content="Добавить" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Command="{Binding AddStudent}"/>
+			<Button Name="RemoveStudentButton" Grid.Column="1" Content="Удалить" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Command="{Binding DeleteStudent}"/>
+		</Grid>
+
+		<Grid Grid.Row="5" RowDefinitions="Auto" ColumnDefinitions="*, *">
+			<Button Name="SaveButton" Grid.Column="0" Content="Сохранить" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Command="{Binding Save}"/>
+			<Button Name="LoadButton" Grid.Column="1" Content="Загрузить" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Command="{Binding Load}"/>
+		</Grid>
+	</Grid>
+</Window>
